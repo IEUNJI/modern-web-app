@@ -10,7 +10,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      
+      'pages': path.resolve(__dirname, 'src', 'pages'),
+      'routes': path.resolve(__dirname, 'src', 'routes')
     },
     extensions: ['.js', '.jsx']
   },

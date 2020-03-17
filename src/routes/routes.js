@@ -1,5 +1,5 @@
-import Home from '../pages/Home/Home';
-import Camera from '../pages/Camera/Camera';
+import Home from 'pages/Home/Home';
+import Camera from 'pages/Camera/Camera';
 
 export default [
   {

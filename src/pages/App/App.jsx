@@ -1,7 +1,8 @@
 import React from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 
-import routes from '../routes/routes';
+import routes from 'routes/routes';
+import './App.less';
 
 class App extends React.Component {
   constructor(props) {
