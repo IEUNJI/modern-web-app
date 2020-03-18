@@ -1,3 +1,61 @@
+@duration: 500ms;
+
 body {
   margin: 0;
+}
+
+#routes-wrapper {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  & > [id$="page"] {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+.forward-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.forward-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all @duration;
+}
+
+.forward-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.forward-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all @duration;
+}
+
+.back-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.back-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all @duration;
+}
+
+.back-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.back-exit-active {
+  opacity: 0;
+  transform: translate(100%);
+  transition: all @duration;
 }
