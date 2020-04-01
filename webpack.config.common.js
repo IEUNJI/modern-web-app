@@ -32,8 +32,7 @@ module.exports = {
           'css-loader',
           'postcss-loader',
           'less-loader'
-        ],
-        exclude: /node_modules/
+        ]
       },
       {
         test: /\.(png|jpg|gif|jpeg|webp|svg|eot|ttf|woff|woff2)$/,
