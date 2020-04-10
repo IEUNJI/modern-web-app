@@ -46,7 +46,8 @@ class Home extends React.Component {
       selectedTab: sessionStorage.getItem(tabBarCacheKey) ?? tabBarConfig[0]?.tabName,
       dailyData: JSON.parse(sessionStorage.getItem(dailyCacheKey) ?? '[]'),
       dailyHistory: JSON.parse(sessionStorage.getItem(historyCacheKey) ?? '[]'),
-      carouselData: JSON.parse(sessionStorage.getItem(carouselCacheKey) ?? '[]')
+      carouselData: JSON.parse(sessionStorage.getItem(carouselCacheKey) ?? '[]'),
+      imgHeight: '0px'
     };
   }
 
@@ -107,7 +108,7 @@ class Home extends React.Component {
   }
 
   renderHomeTab = () => {
-    const { dailyData, dailyHistory, carouselData } = this.state;
+    const { dailyData, dailyHistory, carouselData, imgHeight } = this.state;
     return (
       <div className="home-tab">
         <Carousel
@@ -121,10 +122,19 @@ class Home extends React.Component {
                 <a
                   key={id}
                   className="carousel-wrapper"
+                  style={{ height: imgHeight }}
                   href={url}
                   target="_blank"
                 >
-                  <img className="carousel-img" src={image} />
+                  <img
+                    className="carousel-img"
+                    src={image}
+                    onLoad={() => {
+                      this.setState({ imgHeight: 'auto' }, () => {
+                        window.dispatchEvent(new Event('resize'));
+                      });
+                    }}
+                  />
                   <span className="carousel-title">{title}</span>
                   <span className="carousel-hint">{hint}</span>
                 </a>
