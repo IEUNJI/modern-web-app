@@ -17,53 +17,48 @@ body {
     height: 100vh;
     height: calc(100vh - var(--vh-offset, 0px));
     overflow: scroll;
+    background: #fff;
   }
 }
 
 .forward-enter {
-  opacity: 0;
   transform: translateX(100%);
 }
 
 .forward-enter-active {
-  opacity: 1;
   transform: translateX(0);
   transition: all @duration;
   overflow: hidden !important;
+  z-index: 10;
 }
 
 .forward-exit {
-  opacity: 1;
   transform: translateX(0);
 }
 
 .forward-exit-active {
-  opacity: 0;
-  transform: translateX(-100%);
+  transform: translateX(0);
   transition: all @duration;
   overflow: hidden !important;
 }
 
 .back-enter {
-  opacity: 0;
-  transform: translateX(-100%);
+  transform: translateX(0);
 }
 
 .back-enter-active {
-  opacity: 1;
   transform: translateX(0);
   transition: all @duration;
   overflow: hidden !important;
 }
 
 .back-exit {
-  opacity: 1;
   transform: translateX(0);
 }
 
 .back-exit-active {
-  opacity: 0;
   transform: translate(100%);
   transition: all @duration;
   overflow: hidden !important;
+  z-index: 10;
 }
