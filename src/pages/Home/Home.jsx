@@ -79,7 +79,13 @@ class Home extends React.Component {
   }
 
   initHomeTabScroll = () => {
-    this.homeTabInstance.current.scrollTop = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
+    const { selectedTab } = this.state;
+    const homeTabScroll = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
+    if (selectedTab !== 'homeTab') {
+      storage.setItem(storageCacheKey.homeTabScroll, 0);
+      return;
+    }
+    this.homeTabInstance.current.scrollTop = homeTabScroll;
   }
 
   onCarouselChange = selectedIndex => {
