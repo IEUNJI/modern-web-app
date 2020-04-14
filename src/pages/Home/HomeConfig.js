@@ -31,6 +31,7 @@ export const tabBarConfig = [
 
 export const storageCacheKey = {
   selectedTab: 'mwa-selected-tab',
+  homeTabScroll: 'mwa-home-tab-scroll',
   dailyData: 'mwa-daily-data',
   dailyHistory: 'mwa-daily-history',
   carouselData: 'mwa-carousel-data'

@@ -14,12 +14,11 @@ class Home extends React.Component {
       carouselData: storage.getItem(storageCacheKey.carouselData) ?? [],
       imgHeight: '0px'
     };
+    this.homeTabInstance = React.createRef();
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.fetchDailyData();
-    }, 1000);
+    this.fetchDailyData();
   }
 
   fetchDailyData = () => {
@@ -34,6 +33,7 @@ class Home extends React.Component {
         }, () => {
           storage.setItem(storageCacheKey.dailyData, dailyData);
           storage.setItem(storageCacheKey.carouselData, carouselData);
+          this.initHomeTabScroll();
         });
       });
   }
@@ -59,8 +59,9 @@ class Home extends React.Component {
     }
   }
 
-  onCardClick = url => {
+  onCardClick = item => {
     const { dailyHistory } = this.state;
+    const { id, url } = item;
     if (!dailyHistory.includes(url)) {
       dailyHistory.push(url);
       this.setState({
@@ -69,13 +70,21 @@ class Home extends React.Component {
         storage.setItem(storageCacheKey.dailyHistory, dailyHistory);
       });
     }
-    window.open(url);
+    this.props.history.push(`/detail/${id}`);
+  }
+
+  onHomeTabScroll = event => {
+    storage.setItem(storageCacheKey.homeTabScroll, event.target.scrollTop);
+  }
+
+  initHomeTabScroll = () => {
+    this.homeTabInstance.current.scrollTop = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
   }
 
   renderHomeTab = () => {
     const { dailyData, dailyHistory, carouselData, imgHeight } = this.state;
     return (
-      <div className="home-tab">
+      <div className="home-tab" ref={this.homeTabInstance} onScroll={this.onHomeTabScroll}>
         <Carousel
           autoplay={false}
           infinite
@@ -84,12 +93,11 @@ class Home extends React.Component {
             carouselData.map(item => {
               const { id, url, image, title, hint } = item;
               return (
-                <a
+                <span
                   key={id}
                   className="carousel-wrapper"
                   style={{ height: imgHeight }}
-                  href={url}
-                  target="_blank"
+                  onClick={this.onCardClick.bind(this, item)}
                 >
                   <img
                     className="carousel-img"
@@ -102,7 +110,7 @@ class Home extends React.Component {
                   />
                   <span className="carousel-title">{title}</span>
                   <span className="carousel-hint">{hint}</span>
-                </a>
+                </span>
               );
             })
           }
@@ -124,7 +132,7 @@ class Home extends React.Component {
                     thumb={
                       <img className="card-img" src={images[0]} />
                     }
-                    onClick={this.onCardClick.bind(this, url)}
+                    onClick={this.onCardClick.bind(this, item)}
                   />
                 </Card>
               </div>
