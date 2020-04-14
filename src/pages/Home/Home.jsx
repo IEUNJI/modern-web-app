@@ -19,6 +19,11 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    const { dailyData } = this.state;
+    if (dailyData.length !== 0) {
+      this.initHomeTabScroll();
+      return;
+    }
     this.fetchDailyData();
   }
 
@@ -79,13 +84,15 @@ class Home extends React.Component {
   }
 
   initHomeTabScroll = () => {
-    const { selectedTab } = this.state;
-    const homeTabScroll = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
-    if (selectedTab !== 'homeTab') {
-      storage.setItem(storageCacheKey.homeTabScroll, 0);
-      return;
-    }
-    this.homeTabInstance.current.scrollTop = homeTabScroll;
+    setTimeout(() => {
+      const { selectedTab } = this.state;
+      const homeTabScroll = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
+      if (selectedTab !== 'homeTab') {
+        storage.setItem(storageCacheKey.homeTabScroll, 0);
+        return;
+      }
+      this.homeTabInstance.current.scrollTop = homeTabScroll;
+    });
   }
 
   onCarouselChange = selectedIndex => {
