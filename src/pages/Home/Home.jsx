@@ -12,6 +12,7 @@ class Home extends React.Component {
       dailyData: storage.getItem(storageCacheKey.dailyData) ?? [],
       dailyHistory: storage.getItem(storageCacheKey.dailyHistory) ?? [],
       carouselData: storage.getItem(storageCacheKey.carouselData) ?? [],
+      carouselIndex: storage.getItem(storageCacheKey.carouselIndex) ?? 0,
       imgHeight: '0px'
     };
     this.homeTabInstance = React.createRef();
@@ -81,13 +82,19 @@ class Home extends React.Component {
     this.homeTabInstance.current.scrollTop = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
   }
 
+  onCarouselChange = selectedIndex => {
+    storage.setItem(storageCacheKey.carouselIndex, selectedIndex);
+  }
+
   renderHomeTab = () => {
-    const { dailyData, dailyHistory, carouselData, imgHeight } = this.state;
+    const { dailyData, dailyHistory, carouselData, carouselIndex, imgHeight } = this.state;
     return (
       <div className="home-tab" ref={this.homeTabInstance} onScroll={this.onHomeTabScroll}>
         <Carousel
           autoplay={false}
           infinite
+          selectedIndex={carouselIndex}
+          afterChange={this.onCarouselChange}
         >
           {
             carouselData.map(item => {

@@ -34,7 +34,8 @@ export const storageCacheKey = {
   homeTabScroll: 'mwa-home-tab-scroll',
   dailyData: 'mwa-daily-data',
   dailyHistory: 'mwa-daily-history',
-  carouselData: 'mwa-carousel-data'
+  carouselData: 'mwa-carousel-data',
+  carouselIndex: 'mwa-carousel-index'
 };
 
 export const storage = {
