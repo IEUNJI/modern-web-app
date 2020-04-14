@@ -1,52 +1,17 @@
 import React from 'react';
 import { TabBar, Card, Carousel, WhiteSpace } from 'antd-mobile';
+import { tabBarConfig, storageCacheKey, storage } from './HomeConfig';
 
 import './Home.less';
-
-const tabBarConfig = [
-  {
-    title: '首页',
-    key: 'home',
-    tabName: 'homeTab',
-    icon: 'https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg',
-    selectedIcon: 'https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg'
-  },
-  {
-    title: '理财',
-    key: 'money',
-    tabName: 'moneyTab',
-    icon: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg',
-    selectedIcon: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg'
-  },
-  {
-    title: '口碑',
-    key: 'koubei',
-    tabName: 'koubeiTab',
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg',
-    selectedIcon: 'https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg'
-  },
-  {
-    title: '朋友',
-    key: 'friend',
-    tabName: 'friendTab',
-    icon: 'https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg',
-    selectedIcon: 'https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg'
-  }
-];
-
-const tabBarCacheKey = 'mwa-selected-tab';
-const dailyCacheKey = 'mwa-daily-data';
-const historyCacheKey = 'mwa-daily-history';
-const carouselCacheKey = 'mwa-carousel-data';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: sessionStorage.getItem(tabBarCacheKey) ?? tabBarConfig[0]?.tabName,
-      dailyData: JSON.parse(sessionStorage.getItem(dailyCacheKey) ?? '[]'),
-      dailyHistory: JSON.parse(sessionStorage.getItem(historyCacheKey) ?? '[]'),
-      carouselData: JSON.parse(sessionStorage.getItem(carouselCacheKey) ?? '[]'),
+      selectedTab: storage.getItem(storageCacheKey.selectedTab) ?? tabBarConfig[0]?.tabName,
+      dailyData: storage.getItem(storageCacheKey.dailyData) ?? [],
+      dailyHistory: storage.getItem(storageCacheKey.dailyHistory) ?? [],
+      carouselData: storage.getItem(storageCacheKey.carouselData) ?? [],
       imgHeight: '0px'
     };
   }
@@ -67,8 +32,8 @@ class Home extends React.Component {
           dailyData,
           carouselData
         }, () => {
-          sessionStorage.setItem(dailyCacheKey, JSON.stringify(dailyData));
-          sessionStorage.setItem(carouselCacheKey, JSON.stringify(carouselData));
+          storage.setItem(storageCacheKey.dailyData, dailyData);
+          storage.setItem(storageCacheKey.carouselData, carouselData);
         });
       });
   }
@@ -79,7 +44,7 @@ class Home extends React.Component {
     this.setState({
       selectedTab: tabName
     }, () => {
-      sessionStorage.setItem(tabBarCacheKey, tabName)
+      storage.setItem(storageCacheKey.selectedTab, tabName)
     });
   }
 
@@ -101,7 +66,7 @@ class Home extends React.Component {
       this.setState({
         dailyHistory
       }, () => {
-        sessionStorage.setItem(historyCacheKey, JSON.stringify(dailyHistory));
+        storage.setItem(storageCacheKey.dailyHistory, dailyHistory);
       });
     }
     window.open(url);
