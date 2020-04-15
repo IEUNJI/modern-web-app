@@ -1,4 +1,5 @@
 import React from 'react';
+import './Detail.less';
 
 class Detail extends React.Component {
   constructor(props) {
