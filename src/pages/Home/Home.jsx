@@ -165,7 +165,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { selectedTab1 } = this.state;
+    const { selectedTab } = this.state;
     return (
       <div id="home-page">
         <TabBar>
