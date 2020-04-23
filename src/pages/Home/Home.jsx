@@ -1,6 +1,6 @@
 import React from 'react';
-import { TabBar, Card, Carousel, WhiteSpace } from 'antd-mobile';
-import { tabBarConfig, storageCacheKey, storage } from './HomeConfig';
+import { Carousel, Card, WhiteSpace } from 'antd-mobile';
+import { storage, storageCacheKey } from './HomeConfig';
 
 import './Home.less';
 
@@ -8,20 +8,19 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: storage.getItem(storageCacheKey.selectedTab) ?? tabBarConfig[0]?.tabName,
       dailyData: storage.getItem(storageCacheKey.dailyData) ?? [],
       dailyHistory: storage.getItem(storageCacheKey.dailyHistory) ?? [],
       carouselData: storage.getItem(storageCacheKey.carouselData) ?? [],
       carouselIndex: storage.getItem(storageCacheKey.carouselIndex) ?? 0,
-      imgHeight: '0px'
+      carouselHeight: '0px'
     };
-    this.homeTabInstance = React.createRef();
+    this.homeScrollInstance = React.createRef();
   }
 
   componentDidMount() {
     const { dailyData } = this.state;
     if (dailyData.length !== 0) {
-      this.initHomeTabScroll();
+      this.initHomeScroll();
       return;
     }
     this.fetchDailyData();
@@ -39,30 +38,24 @@ class Home extends React.Component {
         }, () => {
           storage.setItem(storageCacheKey.dailyData, dailyData);
           storage.setItem(storageCacheKey.carouselData, carouselData);
-          this.initHomeTabScroll();
+          this.initHomeScroll();
         });
       });
   }
 
-  onTabBarPress = tabName => {
-    const { selectedTab } = this.state;
-    if (tabName === selectedTab) return;
-    this.setState({
-      selectedTab: tabName
-    }, () => {
-      storage.setItem(storageCacheKey.selectedTab, tabName)
+  initHomeScroll = () => {
+    setTimeout(() => {
+      const homeScroll = storage.getItem(storageCacheKey.homeScroll) ?? 0;
+      this.homeScrollInstance.current.scrollTop = homeScroll;
     });
   }
 
-  renderContent = tabName => {
-    switch (tabName) {
-      case 'homeTab':
-        return this.renderHomeTab();
-      default:
-        return (
-          <div style={{ color: 'rgb(16, 142, 233)' }}>{tabName}</div>
-        );
-    }
+  onHomeScroll = event => {
+    storage.setItem(storageCacheKey.homeScroll, event.target.scrollTop);
+  }
+
+  onCarouselChange = selectedIndex => {
+    storage.setItem(storageCacheKey.carouselIndex, selectedIndex);
   }
 
   onCardClick = item => {
@@ -79,116 +72,69 @@ class Home extends React.Component {
     this.props.history.push(`/detail/${id}`);
   }
 
-  onHomeTabScroll = event => {
-    storage.setItem(storageCacheKey.homeTabScroll, event.target.scrollTop);
-  }
-
-  initHomeTabScroll = () => {
-    setTimeout(() => {
-      const { selectedTab } = this.state;
-      const homeTabScroll = storage.getItem(storageCacheKey.homeTabScroll) ?? 0;
-      if (selectedTab !== 'homeTab') {
-        storage.setItem(storageCacheKey.homeTabScroll, 0);
-        return;
-      }
-      this.homeTabInstance.current.scrollTop = homeTabScroll;
-    });
-  }
-
-  onCarouselChange = selectedIndex => {
-    storage.setItem(storageCacheKey.carouselIndex, selectedIndex);
-  }
-
-  renderHomeTab = () => {
-    const { dailyData, dailyHistory, carouselData, carouselIndex, imgHeight } = this.state;
-    return (
-      <div className="home-tab" ref={this.homeTabInstance} onScroll={this.onHomeTabScroll}>
-        <Carousel
-          autoplay={false}
-          infinite
-          selectedIndex={carouselIndex}
-          afterChange={this.onCarouselChange}
-        >
-          {
-            carouselData.map(item => {
-              const { id, url, image, title, hint } = item;
-              return (
-                <span
-                  key={id}
-                  className="carousel-wrapper"
-                  style={{ height: imgHeight }}
-                  onClick={this.onCardClick.bind(this, item)}
-                >
-                  <img
-                    className="carousel-img"
-                    src={image}
-                    onLoad={() => {
-                      this.setState({ imgHeight: 'auto' }, () => {
-                        window.dispatchEvent(new Event('resize'));
-                      });
-                    }}
-                  />
-                  <span className="carousel-title">{title}</span>
-                  <span className="carousel-hint">{hint}</span>
-                </span>
-              );
-            })
-          }
-        </Carousel>
-        {
-          dailyData.map(item => {
-            const { id, url, images, title, hint } = item;
-            return (
-              <div key={id} size="lg">
-                <WhiteSpace size="lg" />
-                <Card>
-                  <Card.Header
-                    title={
-                      <div className="card-text">
-                        <div className={`card-title${dailyHistory.includes(url) ? ' visited' : ''}`}>{title}</div>
-                        <div className="card-hint">{hint}</div>
-                      </div>
-                    }
-                    thumb={
-                      <img className="card-img" src={images[0]} />
-                    }
-                    onClick={this.onCardClick.bind(this, item)}
-                  />
-                </Card>
-              </div>
-            );
-          })
-        }
-        <WhiteSpace size="lg" />
-      </div>
-    );
-  }
-
   render() {
-    const { selectedTab } = this.state;
+    const { dailyData, dailyHistory, carouselData, carouselIndex, carouselHeight } = this.state;
     return (
       <div id="home-page">
-        <TabBar>
+        <div className="home-scroll" ref={this.homeScrollInstance} onScroll={this.onHomeScroll}>
+          <Carousel
+            autoplay={false}
+            infinite
+            selectedIndex={carouselIndex}
+            afterChange={this.onCarouselChange}
+          >
+            {
+              carouselData.map(item => {
+                const { id, url, image, title, hint } = item;
+                return (
+                  <span
+                    key={id}
+                    className="carousel-wrapper"
+                    style={{ height: carouselHeight }}
+                    onClick={this.onCardClick.bind(this, item)}
+                  >
+                    <img
+                      className="carousel-img"
+                      src={image}
+                      onLoad={() => {
+                        this.setState({ carouselHeight: 'auto' }, () => {
+                          window.dispatchEvent(new Event('resize'));
+                        });
+                      }}
+                    />
+                    <span className="carousel-title">{title}</span>
+                    <span className="carousel-hint">{hint}</span>
+                  </span>
+                );
+              })
+            }
+          </Carousel>
           {
-            tabBarConfig.map(item => {
-              const { title, key, tabName, icon, selectedIcon } = item;
+            dailyData.map(item => {
+              const { id, url, images, title, hint } = item;
               return (
-                <TabBar.Item
-                  title={title}
-                  key={key}
-                  selected={selectedTab === tabName}
-                  icon={{ uri: icon }}
-                  selectedIcon={{ uri: selectedIcon }}
-                  onPress={this.onTabBarPress.bind(this, tabName)}
-                >
-                  {
-                    this.renderContent(tabName)
-                  }
-                </TabBar.Item>
+                <div key={id} size="lg">
+                  <WhiteSpace size="lg" />
+                  <Card>
+                    <Card.Header
+                      title={
+                        <div className="card-text">
+                          <div className={`card-title${dailyHistory.includes(url) ? ' visited' : ''}`}>{title}</div>
+                          <div className="card-hint">{hint}</div>
+                        </div>
+                      }
+                      thumb={
+                        <img className="card-img" src={images[0]} />
+                      }
+                      onClick={this.onCardClick.bind(this, item)}
+                    />
+                  </Card>
+                </div>
               );
             })
           }
-        </TabBar>
+          <WhiteSpace size="lg" />
+        </div>
       </div>
     );
   }
