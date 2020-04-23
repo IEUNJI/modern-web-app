@@ -73,6 +73,17 @@ class Home extends React.Component {
     this.props.history.push(`/detail/${id}`);
   }
 
+  openConsole = () => {
+    if (document.querySelector('#mwa-utils-console')) return;
+
+    const script = document.createElement('script');
+    script.id = 'mwa-utils-console';
+    script.src = '//cdn.bootcss.com/eruda/1.5.2/eruda.min.js';
+    script.setAttribute('onload', 'eruda.init();');
+    
+    document.body.appendChild(script);
+  }
+
   render() {
     const { dailyData, dailyHistory, carouselData, carouselIndex, carouselHeight } = this.state;
     const now = new Date();
@@ -89,7 +100,7 @@ class Home extends React.Component {
           <div className="header-title">
             知乎日报
           </div>
-          <div className="header-icon">
+          <div className="header-icon" onClick={this.openConsole}>
             <img src={headerIcon} />
           </div>
         </div>
