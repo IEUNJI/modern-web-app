@@ -12,7 +12,7 @@ const config = merge(commonWebpackConfig, {
   plugins: [
     new CleanWebpackPlugin(),
     new OptimizeCssAssetsWebpackPlugin(),
-    new BundleAnalyzerPlugin ()
+    // new BundleAnalyzerPlugin ()
   ],
   devtool: 'source-map'
 });
