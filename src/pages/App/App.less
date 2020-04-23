@@ -22,11 +22,13 @@ body {
 }
 
 .forward-enter {
+  opacity: 0;
   transform: translateX(100%);
   z-index: 10;
 }
 
 .forward-enter-active {
+  opacity: 1;
   transform: translateX(0);
   transition: all @duration;
   overflow: hidden !important;
@@ -34,31 +36,37 @@ body {
 }
 
 .forward-exit {
+  opacity: 1;
   transform: translateX(0);
 }
 
 .forward-exit-active {
-  transform: translateX(0);
+  opacity: 0;
+  transform: translateX(-100%);
   transition: all @duration;
   overflow: hidden !important;
 }
 
 .back-enter {
-  transform: translateX(0);
+  opacity: 0;
+  transform: translateX(-100%);
 }
 
 .back-enter-active {
+  opacity: 1;
   transform: translateX(0);
   transition: all @duration;
   overflow: hidden !important;
 }
 
 .back-exit {
+  opacity: 1;
   transform: translateX(0);
   z-index: 10;
 }
 
 .back-exit-active {
+  opacity: 0;
   transform: translate(100%);
   transition: all @duration;
   overflow: hidden !important;
