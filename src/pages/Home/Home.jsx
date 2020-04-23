@@ -1,7 +1,8 @@
 import React from 'react';
 import { Carousel, Card, WhiteSpace } from 'antd-mobile';
-import { storage, storageCacheKey } from './HomeConfig';
+import { storage, storageCacheKey, localeMonths } from './HomeConfig';
 
+import headerIcon from './images/v2-acc9d1cb89b9ae5454736b1d36bb712f_720w.jpg';
 import './Home.less';
 
 class Home extends React.Component {
@@ -74,8 +75,24 @@ class Home extends React.Component {
 
   render() {
     const { dailyData, dailyHistory, carouselData, carouselIndex, carouselHeight } = this.state;
+    const now = new Date();
+    const date = String(now.getDate()).padStart(2, '0');
+    const month = localeMonths[now.getMonth()].padEnd(2, '月');
     return (
       <div id="home-page">
+        <div className="home-header">
+          <div className="header-date">
+            <div className="date-date">{date}</div>
+            <div className="date-month">{month}</div>
+          </div>
+          <div className="header-border"></div>
+          <div className="header-title">
+            知乎日报
+          </div>
+          <div className="header-icon">
+            <img src={headerIcon} />
+          </div>
+        </div>
         <div className="home-scroll" ref={this.homeScrollInstance} onScroll={this.onHomeScroll}>
           <Carousel
             autoplay={false}
