@@ -9,7 +9,9 @@ class Detail extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchArticleData();
+    setTimeout(() => {
+      this.fetchArticleData();
+    }, 500);
   }
 
   fetchArticleData = () => {
@@ -48,7 +50,15 @@ class Detail extends React.Component {
   render() {
     return (
       <div id="detail-page" ref={this.detailPageInstance}>
-        
+        <div style={{ height: innerWidth, background: '#eee' }}></div>
+        <div style={{ padding: '20px' }}>
+          <div style={{ height: '25px', borderRadius: '2px', background: '#eee' }}></div>
+          <div style={{ marginTop: '10px', width: '70%', height: '25px', borderRadius: '2px', background: '#eee' }}></div>
+          <div style={{ marginTop: '20px', width: '40%', height: '15px', borderRadius: '2px', background: '#eee' }}></div>
+          <div style={{ marginTop: '20px', height: '20px', borderRadius: '2px', background: '#eee' }}></div>
+          <div style={{ marginTop: '10px', height: '20px', borderRadius: '2px', background: '#eee' }}></div>
+          <div style={{ marginTop: '10px', height: '20px', borderRadius: '2px', background: '#eee' }}></div>
+        </div>
       </div>
     );
   }
