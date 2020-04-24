@@ -20,6 +20,10 @@ class Detail extends React.Component {
         const articleData = res.CONTENTS;
         const articleHtml = articleData.body;
         const articleCss = articleData.css[0];
+        const articleImage = articleData.image;
+        const articleImageColor = articleData.image_hue.replace('0x', '#');
+        const articleImageSource = articleData.image_source ?? '';
+        const articleTitle = articleData.title;
         const link = document.createElement('link');
         link.id = 'mwa-css-detail';
         link.rel = 'stylesheet';
@@ -28,6 +32,16 @@ class Detail extends React.Component {
           document.head.appendChild(link);
         }
         this.detailPageInstance.current.innerHTML = articleHtml;
+        const imgPlaceHolder = this.detailPageInstance.current.querySelector('.img-place-holder');
+        imgPlaceHolder.style.height = 'auto';
+        imgPlaceHolder.innerHTML = `
+          <div style="position: relative; width: 100%; height: 100%;">
+            <img style="width: 100%; height: 100%; object-fit: cover;" src=${articleImage} />
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, ${articleImageColor} 0%, transparent 50%);"></div>
+            <div style="position: absolute; bottom: 30px; left: 0; padding: 0 20px; font-size: 20px; color: #fff;">${articleTitle}</div>
+            <div style="position: absolute; bottom: 8px; right: 0; padding: 0 20px; height: 14px; line-height: 14px; font-size: 12px; color: #ccc;">${articleImageSource}</div>
+          </div>
+        `;
       });
   }
 
