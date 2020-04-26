@@ -92,7 +92,7 @@ class Home extends React.Component {
     return (
       <div id="home-page">
         <div className="home-header">
-          <div className="header-date">
+          <div className="header-date" onClick={() => this.props.history.push('/editor')}>
             <div className="date-date">{date}</div>
             <div className="date-month">{month}</div>
           </div>
