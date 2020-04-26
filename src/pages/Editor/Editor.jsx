@@ -24,7 +24,7 @@ class Editor extends React.Component {
   render() {
     return (
       <div id="editor-page">
-        <input type="file" accept=".pdf" onChange={this.onFileLoaderChange} />
+        <input type="file" onChange={this.onFileLoaderChange} />
         <hr />
       </div>
     );
