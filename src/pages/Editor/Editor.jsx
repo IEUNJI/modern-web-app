@@ -28,9 +28,11 @@ class Editor extends React.Component {
 
   fileToBase64 = file => {
     return new Promise((resolve, reject) => {
+      console.time('fileToBase64');
       const reader = new FileReader();
       reader.onload = () => {
         const base64 = reader.result;
+        console.timeEnd('fileToBase64');
         resolve(base64);
       };
       reader.readAsDataURL(file);
@@ -39,6 +41,7 @@ class Editor extends React.Component {
 
   base64ToImageData = base64 => {
     return new Promise((resolve, reject) => {
+      console.time('base64ToImageData');
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const image = new Image();
@@ -48,6 +51,7 @@ class Editor extends React.Component {
         canvas.height = height;
         ctx.drawImage(image, 0, 0, width, height);
         const imageData = ctx.getImageData(0, 0, width, height);
+        console.timeEnd('base64ToImageData');
         resolve(imageData);
       };
       image.src = base64;
@@ -56,33 +60,35 @@ class Editor extends React.Component {
 
   imageDataToGray = imageData => {
     return new Promise((resolve, reject) => {
+      console.time('imageDataToGray');
       const { data, width, height } = imageData;
-      const grayData = Array.from({ length: data.length }, () => 0);
-      data.forEach((item, index) => {
-        if ((index + 1) % 4 === 0) {
-          const Red = data[index - 3];
-          const Green = data[index - 2];
-          const Blue = data[index - 1];
-          const Alpha = data[index];
+      const grayData = new Array(data.length);
+      for (let i = 0; i < data.length; i += 4) {
+        const Red = data[i];
+        const Green = data[i + 1];
+        const Blue = data[i + 2];
+        const Alpha = data[i + 3];
 
-          const Gray = Math.floor(Red * 0.3 + Green * 0.59 + Blue * 0.11);
-          grayData[index - 3] = Gray;
-          grayData[index - 2] = Gray;
-          grayData[index - 1] = Gray;
-          grayData[index] = Alpha;
-        }
-      });
+        const Gray = Math.floor(Red * 0.3 + Green * 0.59 + Blue * 0.11);
+
+        grayData[i] = Gray;
+        grayData[i + 1] = Gray;
+        grayData[i + 2] = Gray;
+        grayData[i + 3] = Alpha;
+      }
       const grayImageData = {
         data: grayData,
         width,
         height
       };
+      console.timeEnd('imageDataToGray');
       resolve(grayImageData);
     });
   }
 
   imageDataToBase64 = imageData => {
     return new Promise((resolve, reject) => {
+      console.time('imageDataToBase64');
       const { data, width, height } = imageData;
       const canvas = document.createElement('canvas');
       canvas.width = width;
@@ -102,6 +108,7 @@ class Editor extends React.Component {
       }
       ctx.putImageData(newImageData, 0, 0);
       const base64 = canvas.toDataURL('image/jpeg', 1);
+      console.timeEnd('imageDataToBase64');
       resolve(base64);
     });
   }
