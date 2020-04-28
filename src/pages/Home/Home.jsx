@@ -97,7 +97,7 @@ class Home extends React.Component {
             <div className="date-month">{month}</div>
           </div>
           <div className="header-border"></div>
-          <div className="header-title">
+          <div className="header-title" onClick={() => this.props.history.push('/scan')}>
             知乎日报
           </div>
           <div className="header-icon" onClick={this.openConsole}>
