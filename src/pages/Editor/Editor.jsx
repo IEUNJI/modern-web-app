@@ -8,7 +8,8 @@ class Editor extends React.Component {
     super(props);
     this.state = {
       rawImage: '',
-      grayImage: ''
+      grayImage: '',
+      scanText: ''
     };
   }
 
@@ -20,9 +21,11 @@ class Editor extends React.Component {
     const rawImageData = await this.base64ToImageData(rawBase64);
     const grayImageData = await this.imageDataToGray(rawImageData);
     const grayBase64 = await this.imageDataToBase64(grayImageData);
+    const scanText = await this.resolveQRCode(rawBase64);
     this.setState({
       rawImage: rawBase64,
-      grayImage: grayBase64
+      grayImage: grayBase64,
+      scanText
     });
   }
 
@@ -113,8 +116,19 @@ class Editor extends React.Component {
     });
   }
 
+  resolveQRCode = base64 => {
+    return new Promise((resolve, reject) => {
+      console.time('resolveQRCode');
+      window.qrcode.callback = scanText => {
+        console.timeEnd('resolveQRCode');
+        resolve(scanText !== 'error decoding QR Code' ? scanText : '');
+      };
+      window.qrcode.decode(base64);
+    });
+  }
+
   render() {
-    const { rawImage, grayImage } = this.state;
+    const { rawImage, grayImage, scanText } = this.state;
     return (
       <div id="editor-page">
         <input type="file" onChange={this.onFileLoaderChange} />
@@ -123,6 +137,7 @@ class Editor extends React.Component {
         <hr />
         <img style={{ width: '100%' }} src={grayImage} />
         <hr />
+        <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
       </div>
     );
   }
