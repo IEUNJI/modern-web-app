@@ -164,32 +164,57 @@ class Editor extends React.Component {
     return (
       <div id="editor-page">
         <input type="file" onChange={this.onFileLoaderChange} />
-        <hr />
-        <img style={{ width: '100%' }} src={rawImage} />
-        <hr />
-        <img style={{ width: '100%' }} src={grayImage} />
-        <hr />
-        <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
-        <div className="color-thief-output">
-          <div className="swatches-color">
-            {
-              color.map((rgbStr, index) => {
-                return (
-                  <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
-                );
-              })
-            }
+        {
+          palette.length !== 0 &&
+          <hr />
+        }
+        {
+          palette.length !== 0 &&
+          <div className="color-thief-output">
+            <div className="swatches-color">
+              {
+                color.map((rgbStr, index) => {
+                  return (
+                    <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                  );
+                })
+              }
+            </div>
+            <div className="swatches-palette">
+              {
+                palette.map((rgbStr, index) => {
+                  return (
+                    <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                  );
+                })
+              }
+            </div>
           </div>
-          <div className="swatches-palette">
-            {
-              palette.map((rgbStr, index) => {
-                return (
-                  <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
-                );
-              })
-            }
-          </div>
-        </div>
+        }
+        {
+          rawImage &&
+          <hr />
+        }
+        {
+          rawImage &&
+          <img style={{ width: '100%' }} src={rawImage} />
+        }
+        {
+          grayImage &&
+          <hr />
+        }
+        {
+          grayImage &&
+          <img style={{ width: '100%' }} src={grayImage} />
+        }
+        {
+          scanText &&
+          <hr />
+        }
+        {
+          scanText &&
+          <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
+        }
       </div>
     );
   }
