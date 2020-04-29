@@ -9,7 +9,11 @@ class Editor extends React.Component {
     this.state = {
       rawImage: '',
       grayImage: '',
-      scanText: ''
+      scanText: '',
+      colorThiefOutput: {
+        color: [],
+        palette: []
+      }
     };
   }
 
@@ -23,11 +27,11 @@ class Editor extends React.Component {
     const grayBase64 = await this.imageDataToBase64(grayImageData);
     const scanText = await this.resolveQRCode(rawBase64);
     const colorThiefOutput = await this.resolveColorThief(rawBase64);
-    console.log(colorThiefOutput);
     this.setState({
       rawImage: rawBase64,
       grayImage: grayBase64,
-      scanText
+      scanText,
+      colorThiefOutput
     });
   }
 
@@ -155,7 +159,8 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { rawImage, grayImage, scanText } = this.state;
+    const { rawImage, grayImage, scanText, colorThiefOutput } = this.state;
+    const { color, palette } = colorThiefOutput;
     return (
       <div id="editor-page">
         <input type="file" onChange={this.onFileLoaderChange} />
@@ -165,6 +170,26 @@ class Editor extends React.Component {
         <img style={{ width: '100%' }} src={grayImage} />
         <hr />
         <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
+        <div className="color-thief-output">
+          <div className="swatches-color">
+            {
+              color.map((rgbStr, index) => {
+                return (
+                  <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                );
+              })
+            }
+          </div>
+          <div className="swatches-palette">
+            {
+              palette.map((rgbStr, index) => {
+                return (
+                  <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                );
+              })
+            }
+          </div>
+        </div>
       </div>
     );
   }
