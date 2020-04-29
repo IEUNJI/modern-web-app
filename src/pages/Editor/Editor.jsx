@@ -22,6 +22,8 @@ class Editor extends React.Component {
     const grayImageData = await this.imageDataToGray(rawImageData);
     const grayBase64 = await this.imageDataToBase64(grayImageData);
     const scanText = await this.resolveQRCode(rawBase64);
+    const colorThiefOutput = await this.resolveColorThief(rawBase64);
+    console.log(colorThiefOutput);
     this.setState({
       rawImage: rawBase64,
       grayImage: grayBase64,
@@ -124,6 +126,31 @@ class Editor extends React.Component {
         resolve(scanText !== 'error decoding QR Code' ? scanText : '');
       };
       window.qrcode.decode(base64);
+    });
+  }
+
+  resolveColorThief = base64 => {
+    return new Promise((resolve, reject) => {
+      console.time('resolveColorThief');
+      const rgbFormat = rgbArr => {
+        return rgbArr.map(rgb => {
+          const [r, g, b] = rgb;
+          return `rgb(${r}, ${g}, ${b})`;
+        });
+      };
+      const image = new Image();
+      image.onload = () => {
+        const colorThief = new window.ColorThief();
+        const color = rgbFormat([colorThief.getColor(image)]);
+        const palette = rgbFormat(colorThief.getPalette(image));
+        const colorThiefOutput = {
+          color,
+          palette
+        };
+        console.timeEnd('resolveColorThief');
+        resolve(colorThiefOutput);
+      };
+      image.src = base64;
     });
   }
 
