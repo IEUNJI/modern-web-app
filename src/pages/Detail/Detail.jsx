@@ -14,6 +14,10 @@ class Detail extends React.Component {
     }, 500);
   }
 
+  componentWillUnmount() {
+    document.querySelector('#mwa-css-detail')?.remove();
+  }
+
   fetchArticleData = () => {
     const { id } = this.props.match.params;
     fetch(`https://zhihu-daily.leanapp.cn/api/v1/contents/${id}`)
