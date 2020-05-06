@@ -8,7 +8,9 @@ class Battery extends React.Component {
   }
 
   componentDidMount() {
-    
+    navigator.getBattery().then(battery => {
+      console.log(battery);
+    });
   }
 
   render() {
