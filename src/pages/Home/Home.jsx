@@ -25,7 +25,11 @@ class Home extends React.Component {
   render() {
     return (
       <div id="home-page">
-        
+        <button onClick={this.openConsole}>Open Console</button>
+        <hr />
+        <button onClick={() => this.props.history.push('/editor')}>图片编辑页</button>
+        <hr />
+        <button>电池信息页</button>
       </div>
     );
   }
