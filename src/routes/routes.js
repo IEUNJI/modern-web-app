@@ -1,6 +1,5 @@
 import Home from 'pages/Home/Home';
 import Editor from 'pages/Editor/Editor';
-import Battery from 'pages/Battery/Battery';
 
 export default [
   {
@@ -14,11 +13,5 @@ export default [
     path: '/editor',
     component: Editor,
     title: '图片编辑页'
-  },
-  {
-    exact: true,
-    path: '/battery',
-    component: Battery,
-    title: '电池信息页'
   }
 ];

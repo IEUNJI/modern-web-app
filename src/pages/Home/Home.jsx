@@ -7,10 +7,6 @@ class Home extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    
-  }
-
   openConsole = () => {
     if (document.querySelector('#mwa-utils-console')) return;
 
@@ -29,7 +25,6 @@ class Home extends React.Component {
         <hr />
         <button onClick={() => this.props.history.push('/editor')}>图片编辑页</button>
         <hr />
-        <button onClick={() => this.props.history.push('/battery')}>电池信息页</button>
       </div>
     );
   }
