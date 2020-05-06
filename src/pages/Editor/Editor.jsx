@@ -1,5 +1,4 @@
 import React from 'react';
-import { Toast } from 'antd-mobile';
 
 import './Editor.less';
 
@@ -19,8 +18,8 @@ class Editor extends React.Component {
 
   onFileLoaderChange = async event => {
     const file = event.target.files[0];
-    if (!file) return Toast.fail('未选择任何文件！');
-    if (!file.type.startsWith('image')) return Toast.fail('请选择图片类型文件！');
+    if (!file) return alert('未选择任何文件！');
+    if (!file.type.startsWith('image')) return alert('请选择图片类型文件！');
     const rawBase64 = await this.fileToBase64(file);
     const rawImageData = await this.base64ToImageData(rawBase64);
     const grayImageData = await this.imageDataToGray(rawImageData);
