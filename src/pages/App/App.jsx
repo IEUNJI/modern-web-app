@@ -2,6 +2,8 @@ import React from 'react';
 import { HashRouter, Switch, Route, withRouter } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
+import openConsole from 'utils/openConsole';
+
 import routes from 'routes/routes';
 import './App.less';
 
@@ -74,6 +76,10 @@ class TransitionRoutes extends React.Component {
 class App extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    openConsole();
   }
 
   render() {

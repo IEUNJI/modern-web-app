@@ -162,7 +162,7 @@ class Editor extends React.Component {
     const { color, palette } = colorThiefOutput;
     return (
       <div id="editor-page">
-        <input type="file" onChange={this.onFileLoaderChange} />
+        <input type="file" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
         {
           palette.length !== 0 &&
           <hr />
