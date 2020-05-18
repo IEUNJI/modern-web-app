@@ -46,8 +46,6 @@ class Home extends React.Component {
         <hr />
         <button onClick={() => this.props.history.push('/editor')}>图片编辑页</button>
         <hr />
-        <div className="line-auto"></div>
-        <div className="line-1px"></div>
       </div>
     );
   }
