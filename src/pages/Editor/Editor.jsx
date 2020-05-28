@@ -191,7 +191,7 @@ class Editor extends React.Component {
             <input type="file" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
             {
               pdfBase64 &&
-              <div style={{ width: '100%', overflow: 'auto' }}>{pdfBase64}</div>
+              <p style={{ width: '100%', lineHeight: '28px', overflow: 'auto' }}>{pdfBase64}</p>
             }
             {
               palette.length !== 0 &&
