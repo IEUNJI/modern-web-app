@@ -8,6 +8,7 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      pdfBase64: '',
       rawImage: '',
       grayImage: '',
       scanText: '',
@@ -21,6 +22,14 @@ class Editor extends React.Component {
   onFileLoaderChange = async event => {
     const file = event.target.files[0];
     if (!file) return alert('未选择任何文件！');
+    if (file.type.includes('pdf')) {
+      const pdfBase64 = await this.fileToBase64(file);
+      console.log('pdfBase64', pdfBase64);
+      this.setState({
+        pdfBase64
+      });
+      return;
+    }
     if (!file.type.startsWith('image')) return alert('请选择图片类型文件！');
     const rawBase64 = await this.fileToBase64(file);
     const rawImageData = await this.base64ToImageData(rawBase64);
@@ -160,7 +169,7 @@ class Editor extends React.Component {
   }
 
   render() {
-    const { rawImage, grayImage, scanText, colorThiefOutput } = this.state;
+    const { pdfBase64, rawImage, grayImage, scanText, colorThiefOutput } = this.state;
     const { color, palette } = colorThiefOutput;
     return (
       <MotionScreen>
@@ -180,6 +189,10 @@ class Editor extends React.Component {
               />
             </div>
             <input type="file" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
+            {
+              pdfBase64 &&
+              <div style={{ width: '100%', overflow: 'auto' }}>{pdfBase64}</div>
+            }
             {
               palette.length !== 0 &&
               <hr />
