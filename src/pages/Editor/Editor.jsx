@@ -30,7 +30,11 @@ class Editor extends React.Component {
       });
       return;
     }
-    if (!file.type.startsWith('image')) return alert('请选择图片类型文件！');
+    if (!file.type.startsWith('image')) {
+      console.log(file.type);
+      alert('请选择图片类型文件！')
+      return;
+    }
     const rawBase64 = await this.fileToBase64(file);
     const rawImageData = await this.base64ToImageData(rawBase64);
     const grayImageData = await this.imageDataToGray(rawImageData);
