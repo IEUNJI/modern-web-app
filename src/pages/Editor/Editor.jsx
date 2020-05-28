@@ -1,5 +1,7 @@
 import React from 'react';
+import { MotionScreen, MotionScene, SharedElement } from 'react-motion-layout';
 
+import avatar from 'assets/avatar.png';
 import './Editor.less';
 
 class Editor extends React.Component {
@@ -161,60 +163,77 @@ class Editor extends React.Component {
     const { rawImage, grayImage, scanText, colorThiefOutput } = this.state;
     const { color, palette } = colorThiefOutput;
     return (
-      <div id="editor-page">
-        <input type="file" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
-        {
-          palette.length !== 0 &&
-          <hr />
-        }
-        {
-          palette.length !== 0 &&
-          <div className="color-thief-output">
-            <div className="swatches-color">
-              {
-                color.map((rgbStr, index) => {
-                  return (
-                    <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
-                  );
-                })
-              }
+      <MotionScreen>
+        <MotionScene name="editor-motion" scrollUpOnEnter>
+          <div id="editor-page">
+            <div className="editor-page-title">
+              <SharedElement.Text
+                className="editor-motion-text"
+                animationKey="editor-motion-text"
+              >
+                图片编辑页
+              </SharedElement.Text>
+              <SharedElement.Image
+                src={avatar}
+                className="editor-motion-image"
+                animationKey="editor-motion-image"
+              />
             </div>
-            <div className="swatches-palette">
-              {
-                palette.map((rgbStr, index) => {
-                  return (
-                    <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
-                  );
-                })
-              }
-            </div>
+            <input type="file" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
+            {
+              palette.length !== 0 &&
+              <hr />
+            }
+            {
+              palette.length !== 0 &&
+              <div className="color-thief-output">
+                <div className="swatches-color">
+                  {
+                    color.map((rgbStr, index) => {
+                      return (
+                        <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                      );
+                    })
+                  }
+                </div>
+                <div className="swatches-palette">
+                  {
+                    palette.map((rgbStr, index) => {
+                      return (
+                        <div key={index} className="swatch" style={{ backgroundColor: rgbStr }}></div>
+                      );
+                    })
+                  }
+                </div>
+              </div>
+            }
+            {
+              rawImage &&
+              <hr />
+            }
+            {
+              rawImage &&
+              <img style={{ width: '100%' }} src={rawImage} />
+            }
+            {
+              grayImage &&
+              <hr />
+            }
+            {
+              grayImage &&
+              <img style={{ width: '100%' }} src={grayImage} />
+            }
+            {
+              scanText &&
+              <hr />
+            }
+            {
+              scanText &&
+              <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
+            }
           </div>
-        }
-        {
-          rawImage &&
-          <hr />
-        }
-        {
-          rawImage &&
-          <img style={{ width: '100%' }} src={rawImage} />
-        }
-        {
-          grayImage &&
-          <hr />
-        }
-        {
-          grayImage &&
-          <img style={{ width: '100%' }} src={grayImage} />
-        }
-        {
-          scanText &&
-          <hr />
-        }
-        {
-          scanText &&
-          <p style={{ overflowWrap: 'break-word' }}>{scanText}</p>
-        }
-      </div>
+        </MotionScene>
+      </MotionScreen>
     );
   }
 }
