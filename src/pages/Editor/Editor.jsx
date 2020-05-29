@@ -17,6 +17,7 @@ class Editor extends React.Component {
         palette: []
       }
     };
+    this.colorsRef = React.createRef();
   }
 
   onFileLoaderChange = async event => {
@@ -46,7 +47,7 @@ class Editor extends React.Component {
       grayImage: grayBase64,
       scanText,
       colorThiefOutput
-    });
+    }, this.animateHandler);
   }
 
   fileToBase64 = file => {
@@ -172,6 +173,24 @@ class Editor extends React.Component {
     });
   }
 
+  animateHandler = () => {
+    const colors = this.colorsRef.current.childNodes;
+    colors.forEach((color, index) => {
+      color.animate(
+        [
+          { opacity: 0 },
+          { opacity: 1 }
+        ],
+        {
+          duration: 1000,
+          easing: 'ease-in-out',
+          delay: index * 300,
+          fill: 'both'
+        }
+      );
+    });
+  }
+
   render() {
     const { pdfBase64, rawImage, grayImage, scanText, colorThiefOutput } = this.state;
     const { color, palette } = colorThiefOutput;
@@ -213,7 +232,7 @@ class Editor extends React.Component {
                     })
                   }
                 </div>
-                <div className="swatches-palette">
+                <div className="swatches-palette" ref={this.colorsRef}>
                   {
                     palette.map((rgbStr, index) => {
                       return (
