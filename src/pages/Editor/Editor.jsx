@@ -23,6 +23,7 @@ class Editor extends React.Component {
   onFileLoaderChange = async event => {
     const file = event.target.files[0];
     if (!file) return alert('未选择任何文件！');
+    console.log('fileInfo', file, file.name, file.type);
     if (file.type.includes('pdf')) {
       const pdfBase64 = await this.fileToBase64(file);
       console.log('pdfBase64', pdfBase64);
