@@ -217,7 +217,7 @@ class Editor extends React.Component {
                 animationKey="editor-motion-image"
               />
             </div>
-            <input type="file" accept="image/*" style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
+            <input type="file" accept="image/*" multiple style={{ width: '100%' }} onChange={this.onFileLoaderChange} />
             {
               pdfBase64 &&
               <p style={{ width: '100%', lineHeight: '28px', overflow: 'auto' }}>{pdfBase64}</p>
